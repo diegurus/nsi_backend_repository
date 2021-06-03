@@ -56,8 +56,5 @@
       "standard/object-curly-even-spacing": "off",
       "no-useless-return": "warn"
     }
-  },
-  "dependencies": {
-    "dotenv": "^8.2.0"
   }
 }

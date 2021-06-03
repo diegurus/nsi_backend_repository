@@ -1,5 +1,4 @@
 const request = require('supertest');
-require('dotenv').config();
 
 export default async (expectedStatus, params) => {
   const url = process.env.BASE_URL;
