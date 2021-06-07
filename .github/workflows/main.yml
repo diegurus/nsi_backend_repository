@@ -1,38 +1,27 @@
 # This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
 # For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
 
-name: Generate Cypress Report
+name: Test CI
 on:
   push:
     branches:
       - master
 
 jobs:
-  cypress-test:
-    name: Run on Chrome 91
-    runs-on: ubuntu-18.04
-    container: cypress/browsers:node14.16.0-chrome90-ff88
+  jest-test:
+    name: Jest Test
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Test using Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14'
+      
+      - name: Check sintax with lint
+        run: npm run lint    
 
-      - name: Install cypress and verify
-        run: |
-          npm ci
-          $(npm bin)/cypress verify
-      - name: Run Cypress tests
-        run: npm run test:chrome
+      - name: Run Test
+        run: npm run test
         continue-on-error: false
 
-      - name: Check sintax with lint
-        run: npm run lint
-         
-      - name: Copy test execution videos and screenshots
-        run: |
-          mkdir public
-          cp -r cypress/videos public/videos
-          cp -r cypress/screenshots public/screenshots
-      - name: Deploy report page to Github Page
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ Secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
